@@ -3,6 +3,10 @@ from datetime import datetime, timedelta
 from tkcalendar import DateEntry
 from tkinter import Tk, Label, Entry, Button, W, mainloop
 import re
+from datetime import date
+
+today = date.today()
+d1 = today.strftime("%d/%m/%Y")
 
 def indemnizacion_despido(fecha_antiguedad, salari, fecha_despido):
     fechalimite = datetime.strptime('12/02/2012', '%d/%m/%Y').date()
@@ -24,8 +28,14 @@ def indemnizacion_despido(fecha_antiguedad, salari, fecha_despido):
         indem2 = indemprev + indempost
         return indem2
 
-def show_answer():
+def show_answer_despido():
+    result.delete(0, 100)
     indemnizacion = indemnizacion_despido(antig.get(), salario.get() ,despid.get())
+    result.insert(0, round(indemnizacion, 2))
+
+def show_answer_extincion():
+    result.delete(0, 100)
+    indemnizacion = indemnizacion_despido(antig.get(), salario.get() ,d1)
     result.insert(0, round(indemnizacion, 2))
 
 main = Tk()
@@ -45,7 +55,7 @@ antig.grid(row=1, column=1, padx=5, pady=5)
 despid.grid(row=2, column=1, padx=5, pady=5)
 result.grid(row=3, column=1, padx=5, pady=5)
 
-Button(main, text='Cerrar', command=main.destroy).grid(row=5, column=0, sticky=W, padx=5, pady=5)
-Button(main, text='Calcular', command=show_answer).grid(row=5, column=1, sticky=W, padx=5, pady=5)
+Button(main, text='Despido', command=show_answer_despido).grid(row=5, column=0, sticky=W, padx=5, pady=5)
+Button(main, text='Extinción', command=show_answer_extincion).grid(row=5, column=1, sticky=W, padx=5, pady=5)
 
 mainloop()
